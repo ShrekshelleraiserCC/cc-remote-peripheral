@@ -6,13 +6,13 @@ local selection = io.read()
 
 local function install(url, toInstall)
   for k,v in ipairs(toInstall) do
-    local file = fs.open(v..".lua", "w")
-    local web = http.get(url..v..".lua")
+    local file = fs.open(v, "w")
+    local web = http.get(url..v)
     print("Installing "..v.."...")
     if type(file) == "nil" then
       term.clear()
       term.setCursorPos(1,1)
-      error("Unable to open "..v..".lua")
+      error("Unable to open "..v)
     end
     if web.getResponseCode() ~= 200 then
       term.clear()
