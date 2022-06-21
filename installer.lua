@@ -7,6 +7,7 @@ local selection = io.read()
 local function install(url, toInstall)
   for k,v in ipairs(toInstall) do
     local file = fs.open(v, "w")
+    print(url..v)
     local web = http.get(url..v)
     print("Installing "..v.."...")
     if type(file) == "nil" then
@@ -14,7 +15,7 @@ local function install(url, toInstall)
       term.setCursorPos(1,1)
       error("Unable to open "..v)
     end
-    if web.getResponseCode() ~= 200 then
+    if (not web) or web.getResponseCode() ~= 200 then
       term.clear()
       term.setCursorPos(1,1)
       error("Unable to download, got "..tostring(web.getResponseCode()).." as response.")
@@ -29,10 +30,10 @@ if selection == "1" then
   -- Client
   print("Installing client..")
   install("https://raw.githubusercontent.com/MasonGulu/cc-rednet-encrypt/master/", {"client.lua", "common.lua", "ecc.lua"})
-  install("https://raw.githubusercontent.com/MasonGulu/cc-remote-peripheral/master/client", {"rperipheral.lua"})
+  install("https://raw.githubusercontent.com/MasonGulu/cc-remote-peripheral/master/client/", {"rperipheral.lua"})
 elseif selection == "2" then
   -- Server
   print("Installing server..")
   install("https://raw.githubusercontent.com/MasonGulu/cc-rednet-encrypt/master/", {"server.lua", "common.lua", "ecc.lua"})
-  install("https://raw.githubusercontent.com/MasonGulu/cc-remote-peripheral/master/server", {"rhost.lua"})
+  install("https://raw.githubusercontent.com/MasonGulu/cc-remote-peripheral/master/server/", {"rhost.lua"})
 end
