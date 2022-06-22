@@ -118,10 +118,10 @@ end
 
 --- Call isPresent on a remote peripheral
 function rperipheral.isPresent(name)
-  side = rperipheral.lookup[side] or side
-  local isAddress, password, hostname, id, peripheralName = decodeAddress(side)
+  name = rperipheral.lookup[name] or name
+  local isAddress, password, hostname, id, peripheralName = decodeAddress(name)
   if (not isAddress) and rperipheral.passthrough then
-    return peripheralBackup.isPresent(side)
+    return peripheralBackup.isPresent(name)
   end
   assert(isAddress, "Invalid address format, expects [password@]{id|hostname}:peripheral")
   c = client.new("rperipheral", {hostId = id, hostname=hostname})
@@ -140,10 +140,10 @@ function rperipheral.getMethods(name)
   -- address will either be
   -- password@hostname:peripheral
   -- or password@id:peripheral
-  address = rperipheral.lookup[address] or address
-  local isAddress, password, hostname, id, peripheralName = decodeAddress(address)
+  name = rperipheral.lookup[name] or name
+  local isAddress, password, hostname, id, peripheralName = decodeAddress(name)
   if (not isAddress) and rperipheral.passthrough then
-    return peripheralBackup.getMethods(address)
+    return peripheralBackup.getMethods(name)
   end
   assert(isAddress, "Invalid address format, expects [password@]{id|hostname}:peripheral")
   c = client.new("rperipheral", {hostId=id, hostname=hostname})
