@@ -12,4 +12,4 @@ local monitor = require "rperipheral" "password@host:monitor_0"
 monitor.write("Hello World")
 ```
 
-The `wrap` function expects a string of the format `[password@]{id|hostname}:protocol`, where you can use `id` (the computer ID) or `hostname` (the rednet hostname).
+The `wrap` function expects a string of the format `[password@]{id|hostname}:peripheral`, where you can use `id` (the computer ID) or `hostname` (the rednet hostname).
