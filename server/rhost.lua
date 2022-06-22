@@ -4,8 +4,7 @@ local common = require("common")
 local s = server.new("rperipheral", "testhost")
 
 local password = "password"
-local ignorePassword = true
-local unencrypted = true
+local ignorePassword = false
 
 function s:msgHandle(id, msg)
   if msg[1] == "authorize" then
