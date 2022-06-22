@@ -14,13 +14,10 @@ function s:msgHandle(id, msg)
     -- msg[1] should be peripheral name
     -- just return a table of all functions that this peripheral supports
     local T = {}
-    local pT = peripheral.wrap(msg[2])
+    local pT = peripheral.getMethods(msg[2])
     
     if pT then
-      for k,v in pairs(pT) do
-        T[#T+1] = k
-      end
-      self:sendEncryptedMessage(id, T)
+      self:sendEncryptedMessage(id, pT)
     else
       self:sendMessage(id, common.messageTypes.error, msg[2].." is not a valid peripheral.")
     end
@@ -29,6 +26,9 @@ function s:msgHandle(id, msg)
     -- msg[3] should be the method name
     -- msg[4] should be the args list
     local response = {peripheral.call(msg[2], msg[3], table.unpack(msg[4]))}
+    self:sendEncryptedMessage(id, response)
+  elseif msg[1] == "isPresent" and (self.activeConnections[id].authorized or not password) then
+    local response = {peripheral.isPresent(msg[2])}
     self:sendEncryptedMessage(id, response)
   elseif not self.activeConnections[id].authorized then
     self:sendEncryptedMessage(id, {"Unauthorized"})
