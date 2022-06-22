@@ -143,7 +143,7 @@ function rperipheral.getMethods(name)
   address = rperipheral.lookup[address] or address
   local isAddress, password, hostname, id, peripheralName = decodeAddress(address)
   if (not isAddress) and rperipheral.passthrough then
-    return peripheralBackup.wrap(address)
+    return peripheralBackup.getMethods(address)
   end
   assert(isAddress, "Invalid address format, expects [password@]{id|hostname}:peripheral")
   c = client.new("rperipheral", {hostId=id, hostname=hostname})
