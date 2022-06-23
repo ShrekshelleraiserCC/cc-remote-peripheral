@@ -8,9 +8,15 @@ To use this project, install the `server` files on the host computer (the one wi
 Use on the client is very simple, as this can be used as a drop in replacement for `peripheral`.
 
 ```lua
-peripheral = require "rperipheral"
+_G.peripheral = require "rperipheral"
 local monitor = peripheral.wrap("password@host:monitor_0")
 monitor.write("Hello World")
+```
+
+Alternatively you can use this to wrap a single peripheral like so
+```lua
+local monitor = require "rperipheral" "password@host:monitor_0"
+monitor.write("Hello World!")
 ```
 
 Any function that you can normally pass a side or peripheral name into can instead be given a string of the format `[password@]{id|hostname}:peripheral`, where you can use `id` (the computer ID) or `hostname` (the rednet hostname). Any normal peripheral names will instead be passed through to the original `peripheral` class.
@@ -19,7 +25,7 @@ Any function that you can normally pass a side or peripheral name into can inste
 You can simply replace peripheral with the client `rperipheral`, then you can add an entry to `rperipheral.lookup`. For example if your program expects a monitor on the top, and wraps that monitor based on the name "top", you can add en entry to `rperipheral.lookup` like so:
 
 ```lua
-peripheral = require "rperipheral"
+_G.peripheral = require "rperipheral"
 periphreal.lookup.top = "password@host:monitor_0"
 ```
 
