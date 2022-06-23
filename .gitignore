@@ -8,3 +8,4 @@ client/client.lua
 client/common.lua
 client/ecc.lua
 client/.random
+client/test.lua
