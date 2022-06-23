@@ -84,6 +84,8 @@ function rperipheral.wrap(address, ...)
   assert(status, pT)
   assert(pT[1] ~= "Unauthorized", "Unauthorized")
   local T = {}
+  setmetatable(T, pT.meta)
+  pT.meta = nil
   for k,v in pairs(pT) do
     T[v] = function (...)
       local stat, returnT = c:sendReq({"call", peripheralName, v, arg})
@@ -155,9 +157,40 @@ function rperipheral.getMethods(name)
   local status, pT = c:sendReq({"get", peripheralName})
   assert(status, pT)
   assert(pT[1] ~= "Unauthorized", "Unauthorized")
+  pT.meta = nil
   return pT
 end
 
+function rperipheral.getType(name)
+  if type(name) == "table" then
+    return getmetatable(name).type
+  elseif type(name) == "string" then
+    name = rperipheral.lookup[name] or name
+    local isAddress, password, hostname, id, peripheralName = decodeAddress(name)
+    if (not isAddress) and rperipheral.passthrough then
+      return peripheralBackup.getMethods(name)
+    end
+    assert(isAddress, "Invalid address format, expects [password@]{id|hostname}:peripheral")
+    c = client.new("rperipheral", {hostId=id, hostname=hostname})
+    if type(password) ~= "nil" then
+      local status, response = c:sendReq({"authorize",password})
+      assert(status, response) -- this will cause an error anytime this is not able to reach the server
+      assert(response[1], "Password incorrect")
+    end
+    local status, pT = c:sendReq({"getType", peripheralName})
+    assert(status, pT)
+    assert(pT[1] ~= "Unauthorized", "Unauthorized")
+    return pT[1]
+  end
+end
+
+function rperipheral.hasType(name, peripehral_type)
+  return peripehral_type == rperipheral.getType(name)
+end
+
 setmetatable(rperipheral, {__call=rperipheral.wrap})
+
+setmetatable(rperipheral, peripheralBackup)
+peripheralBackup.__index = peripheralBackup
 
 return rperipheral

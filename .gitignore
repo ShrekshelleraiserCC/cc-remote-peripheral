@@ -2,7 +2,9 @@
 server/server.lua
 server/common.lua
 server/ecc.lua
+server/.random
 
 client/client.lua
 client/common.lua
 client/ecc.lua
+client/.random
