@@ -188,9 +188,8 @@ function rperipheral.hasType(name, peripehral_type)
   return peripehral_type == rperipheral.getType(name)
 end
 
-setmetatable(rperipheral, {__call=rperipheral.wrap})
-
 setmetatable(rperipheral, peripheralBackup)
+peripheralBackup.__call = rperipheral.wrap
 peripheralBackup.__index = peripheralBackup
 
 return rperipheral
