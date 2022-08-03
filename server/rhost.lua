@@ -1,14 +1,35 @@
 local server = require("server")
 local common = require("common")
 
-local s = server.new("rperipheral", "testhost")
+settings.define("rperipheral.hostname", {
+  description="The hostname to use for this rperipheral host",
+  type="string",
+})
+settings.define("rperipheral.ignorePassword", {
+  description="Intentionally do not require a password",
+  type="boolean",
+  default=false,
+})
+settings.define("rperipheral.password", {
+  description="Password to use when connecting to this rperipheral host.",
+  type="string",
+})
 
-local password = "password"
-local ignorePassword = false
+assert(settings.get("rperipheral.hostname"), "Set rperipheral.hostname first.")
+
+local s = server.new("rperipheral", settings.get("rperipheral.hostname"))
+
+
+local ignorePassword = settings.get("rperipheral.ignorePassword")
+
+local password
+if not ignorePassword then
+  password = assert(settings.get("rperipheral.password"), "Set rperipheral.password first.")
+end
 
 function s:msgHandle(id, msg)
   if msg[1] == "authorize" then
-    self:sendEncryptedMessage(id, {msg[2] == password})
+    self:sendEncryptedMessage(id, {(msg[2] or " ") == password})
     self.activeConnections[id].authorized = msg[2] == password
   elseif msg[1] == "get" and (self.activeConnections[id].authorized or not password) then
     -- msg[1] should be peripheral name

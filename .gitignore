@@ -3,6 +3,7 @@ server/server.lua
 server/common.lua
 server/ecc.lua
 server/.random
+server/.settings
 
 client/client.lua
 client/common.lua
