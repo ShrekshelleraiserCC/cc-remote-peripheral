@@ -5,6 +5,8 @@ To install simply run `wget run https://raw.githubusercontent.com/MasonGulu/cc-r
 
 To use this project, install the `server` files on the host computer (the one with the peripheral), and the `client` files on the computer you want to access the peripheral from. Then run `rhost` on the server after configuring the password and hostname you'd like (you *can* run without a password, and the password is stored in plaintext {but transmitted over an encrypted connection}).
 
+**Do not use your bank password for this. Do not reuse real passwords for this. They are stored in plaintext (as mentioned above).**
+
 Use on the client is very simple, as this can be used as a drop in replacement for `peripheral`.
 
 ```lua
