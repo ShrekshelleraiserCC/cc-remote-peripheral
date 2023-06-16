@@ -28,7 +28,7 @@ You can simply replace peripheral with the client `rperipheral`, then you can ad
 
 ```lua
 _G.peripheral = require "rperipheral"
-periphreal.lookup.top = "password@host:monitor_0"
+peripheral.lookup.top = "password@host:monitor_0"
 ```
 
 Then anytime "top" is passed into a peripheral function, it will instead be substituted for "password@host:monitor_0"
